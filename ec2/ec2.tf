@@ -1,7 +1,7 @@
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
   description = "Allow SSH inbound traffic and all outbound traffic"
-  vpc_id      = aws_vpc.main.id
+
 
   ingress {
     from_port        = 22
@@ -24,4 +24,14 @@ resource "aws_security_group" "allow_ssh" {
     Name = "allow_tls"
     CreatedBy = "Swetha"
   }
+}
+
+resource "aws_instance" "db"{
+    ami = "ami-031d574cddc5bb371"
+    vpc_security_group_ids = [aws_security_group.allow_ssh.id] 
+    instance_type = "t3.micro"
+    
+    tags ={
+        Name = "DB"
+}
 }
